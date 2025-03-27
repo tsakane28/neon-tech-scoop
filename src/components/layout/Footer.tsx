@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Linkedin, Youtube, Mail, ArrowRight } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Youtube, Mail, ArrowRight, BookOpen, Calendar, FileText, Video } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -62,13 +62,32 @@ const Footer = () => {
             </div>
             
             <div>
-              <h3 className="font-semibold mb-4">Company</h3>
+              <h3 className="font-semibold mb-4">Resources</h3>
               <ul className="space-y-2">
-                <li><Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">About</Link></li>
-                <li><Link to="/team" className="text-muted-foreground hover:text-foreground transition-colors">Team</Link></li>
-                <li><Link to="/careers" className="text-muted-foreground hover:text-foreground transition-colors">Careers</Link></li>
-                <li><Link to="/advertise" className="text-muted-foreground hover:text-foreground transition-colors">Advertise</Link></li>
-                <li><Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</Link></li>
+                <li>
+                  <Link to="/glossary" className="text-muted-foreground hover:text-foreground transition-colors flex items-center">
+                    <BookOpen className="h-4 w-4 mr-2" />
+                    Tech Glossary
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/events" className="text-muted-foreground hover:text-foreground transition-colors flex items-center">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Events Calendar
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/snippets" className="text-muted-foreground hover:text-foreground transition-colors flex items-center">
+                    <FileText className="h-4 w-4 mr-2" />
+                    Code Snippets
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/videos" className="text-muted-foreground hover:text-foreground transition-colors flex items-center">
+                    <Video className="h-4 w-4 mr-2" />
+                    Video Tutorials
+                  </Link>
+                </li>
               </ul>
             </div>
             

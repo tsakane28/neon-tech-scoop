@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Search, User, Menu, X, ChevronDown, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SearchBar from '../ui/SearchBar';
+import ThemeSwitcher from '../ui/ThemeSwitcher';
 
 const categories = [
   { name: 'AI', subcategories: ['Machine Learning', 'Natural Language', 'Computer Vision', 'OpenAI'] },
@@ -22,7 +22,6 @@ const Navbar = () => {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const [searchOpen, setSearchOpen] = useState(false);
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
@@ -38,7 +37,6 @@ const Navbar = () => {
     };
   }, []);
 
-  // Close mega menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -85,12 +83,10 @@ const Navbar = () => {
         }`}
       >
         <div className="content-container flex items-center justify-between relative">
-          {/* Logo */}
           <Link to="/" className="relative z-10">
             <h1 className="text-2xl font-bold gradient-text">NeonTech</h1>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <div 
               className="mega-menu-trigger flex items-center cursor-pointer"
@@ -117,7 +113,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Right Side Buttons */}
           <div className="flex items-center space-x-4">
             <button 
               onClick={toggleSearch}
@@ -126,6 +121,8 @@ const Navbar = () => {
             >
               <Search className="h-5 w-5" />
             </button>
+            
+            <ThemeSwitcher />
             
             <Link 
               to="/auth" 
@@ -145,11 +142,9 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mega Menu */}
         <div className={`mega-menu ${megaMenuOpen ? 'open' : ''} shadow-2xl`}>
           <div className="content-container py-8">
             <div className="grid grid-cols-12 gap-8">
-              {/* Categories */}
               <div className="col-span-3 border-r border-border">
                 <ul className="space-y-2">
                   {categories.map((category) => (
@@ -170,7 +165,6 @@ const Navbar = () => {
                 </ul>
               </div>
               
-              {/* Subcategories */}
               <div className="col-span-9">
                 <h3 className="text-lg font-semibold mb-4">{selectedCategory.name}</h3>
                 <div className="grid grid-cols-3 gap-4">
@@ -189,13 +183,12 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         <div 
           className={`fixed inset-0 z-40 glass ${
             mobileMenuOpen ? 'flex flex-col' : 'hidden'
           }`}
         >
-          <div className="h-16"></div> {/* Space for the navbar */}
+          <div className="h-16"></div>
           <div className="flex-1 overflow-y-auto p-4">
             <ul className="space-y-4 py-4">
               {categories.map((category) => (
@@ -250,7 +243,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Search Overlay */}
         <div 
           className={`fixed inset-0 z-40 glass flex flex-col items-center justify-start pt-20 px-4 ${
             searchOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
@@ -269,7 +261,7 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
-      <div className="h-16 md:h-20"></div> {/* Space for the navbar */}
+      <div className="h-16 md:h-20"></div>
     </header>
   );
 };

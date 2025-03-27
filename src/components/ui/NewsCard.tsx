@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Clock } from 'lucide-react';
@@ -18,6 +19,7 @@ export interface NewsArticle {
   image: string;
   slug: string;
   content?: string;
+  featured?: boolean;
 }
 
 interface NewsCardProps {

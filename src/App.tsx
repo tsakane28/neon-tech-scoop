@@ -17,13 +17,20 @@ import Search from "./pages/Search";
 import CreateNews from "./pages/CreateNews";
 import CreateBlog from "./pages/CreateBlog";
 import CreatePodcast from "./pages/CreatePodcast";
+import Glossary from "./pages/Glossary";
 
 // Create a client
 const queryClient = new QueryClient();
 
 // Apply dark class to root element for dark mode
 const initializeDarkMode = () => {
-  document.documentElement.classList.add('dark');
+  // Check if user has a saved theme preference, otherwise default to dark
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'light') {
+    document.documentElement.classList.remove('dark');
+  } else {
+    document.documentElement.classList.add('dark');
+  }
 };
 
 const App = () => {
@@ -50,6 +57,7 @@ const App = () => {
             <Route path="/create/news" element={<CreateNews />} />
             <Route path="/create/blog" element={<CreateBlog />} />
             <Route path="/create/podcast" element={<CreatePodcast />} />
+            <Route path="/glossary" element={<Glossary />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

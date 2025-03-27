@@ -7,6 +7,11 @@ import NewsFeed from '@/components/home/NewsFeed';
 import NewsletterSubscribe from '@/components/ui/NewsletterSubscribe';
 import PodcastCard, { PodcastEpisode } from '@/components/ui/PodcastCard';
 import NewsCard, { NewsArticle } from '@/components/ui/NewsCard';
+import TrendingTopics from '@/components/home/TrendingTopics';
+import TechPoll from '@/components/ui/TechPoll';
+import VideoTutorials from '@/components/ui/VideoTutorials';
+import EventsCalendar from '@/components/ui/EventsCalendar';
+import CodeSnippets from '@/components/ui/CodeSnippets';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -90,6 +95,20 @@ const blogPosts: NewsArticle[] = [
   },
 ];
 
+// Sample poll data
+const samplePoll = {
+  id: 'p1',
+  question: 'Which AI model do you think will dominate in 2024?',
+  options: [
+    { id: 'o1', text: 'OpenAI GPT-4', votes: 423 },
+    { id: 'o2', text: 'Google Gemini', votes: 387 },
+    { id: 'o3', text: 'Anthropic Claude', votes: 298 },
+    { id: 'o4', text: 'Meta Llama', votes: 245 },
+  ],
+  totalVotes: 1353,
+  endDate: 'June 30, 2024'
+};
+
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
@@ -118,6 +137,26 @@ const Index = () => {
           </div>
         </section>
         
+        {/* Trending Topics & Poll */}
+        <section className="py-12">
+          <div className="content-container">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="md:col-span-2">
+                <TrendingTopics />
+              </div>
+              <div className="md:col-span-1">
+                <TechPoll 
+                  id={samplePoll.id}
+                  question={samplePoll.question}
+                  options={samplePoll.options}
+                  totalVotes={samplePoll.totalVotes}
+                  endDate={samplePoll.endDate}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+        
         {/* News Feed */}
         <section className="py-16">
           <div className="content-container">
@@ -125,8 +164,15 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Podcasts */}
+        {/* Video Tutorials */}
         <section className="py-16 bg-muted/30">
+          <div className="content-container">
+            <VideoTutorials />
+          </div>
+        </section>
+        
+        {/* Podcasts */}
+        <section className="py-16">
           <div className="content-container">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl font-bold">Featured Podcasts</h2>
@@ -149,6 +195,18 @@ const Index = () => {
               {featuredPodcasts.slice(0, 4).map(podcast => (
                 <PodcastCard key={podcast.id} episode={podcast} variant="compact" />
               ))}
+            </div>
+          </div>
+        </section>
+        
+        {/* Events Calendar & Code Snippets */}
+        <section className="py-16 bg-muted/30">
+          <div className="content-container">
+            <div className="mb-12">
+              <EventsCalendar />
+            </div>
+            <div>
+              <CodeSnippets limit={2} />
             </div>
           </div>
         </section>
