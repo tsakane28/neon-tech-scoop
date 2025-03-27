@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Poll } from 'lucide-react';
+import { BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 
@@ -47,7 +47,7 @@ const TechPoll: React.FC<TechPollProps> = ({ id, question, options, totalVotes: 
   return (
     <div className="rounded-xl bg-card p-6 shadow-sm border">
       <div className="flex items-center mb-4">
-        <Poll className="h-5 w-5 text-primary mr-2" />
+        <BarChart3 className="h-5 w-5 text-primary mr-2" />
         <h3 className="text-lg font-bold">Tech Poll</h3>
       </div>
       
