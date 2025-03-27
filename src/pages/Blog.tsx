@@ -5,6 +5,9 @@ import Footer from '@/components/layout/Footer';
 import NewsCard from '@/components/ui/NewsCard';
 import NewsletterSubscribe from '@/components/ui/NewsletterSubscribe';
 import { blogPosts } from '@/data/siteData';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Blog = () => {
   return (
@@ -14,11 +17,19 @@ const Blog = () => {
       <main className="flex-grow">
         {/* Header */}
         <section className="py-16 bg-muted/30">
-          <div className="content-container">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Blog</h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
-              In-depth articles, analyses, and opinion pieces on the most important topics in tech.
-            </p>
+          <div className="content-container flex justify-between items-center">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Blog</h1>
+              <p className="text-xl text-muted-foreground max-w-3xl">
+                In-depth articles, analyses, and opinion pieces on the most important topics in tech.
+              </p>
+            </div>
+            <Link to="/create/blog">
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" />
+                Create Post
+              </Button>
+            </Link>
           </div>
         </section>
         

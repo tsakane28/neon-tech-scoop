@@ -1,22 +1,23 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Clock } from 'lucide-react';
+
+export interface Author {
+  name: string;
+  avatar: string;
+}
 
 export interface NewsArticle {
   id: string;
   title: string;
   excerpt: string;
   category: string;
-  author?: {
-    name: string;
-    avatar?: string;
-  };
+  author: Author;
   date: string;
-  readTime?: string;
-  image?: string;
+  readTime: string;
+  image: string;
   slug: string;
-  featured?: boolean;
+  content?: string;
 }
 
 interface NewsCardProps {

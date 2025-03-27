@@ -13,6 +13,10 @@ import Blog from "./pages/Blog";
 import ArticlePage from "./pages/ArticlePage";
 import PodcastPage from "./pages/PodcastPage";
 import CategoryPage from "./pages/CategoryPage";
+import Search from "./pages/Search";
+import CreateNews from "./pages/CreateNews";
+import CreateBlog from "./pages/CreateBlog";
+import CreatePodcast from "./pages/CreatePodcast";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -42,6 +46,10 @@ const App = () => {
             <Route path="/podcast/:slug" element={<PodcastPage />} />
             <Route path="/category/:category" element={<CategoryPage />} />
             <Route path="/category/:category/:subcategory" element={<CategoryPage />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/create/news" element={<CreateNews />} />
+            <Route path="/create/blog" element={<CreateBlog />} />
+            <Route path="/create/podcast" element={<CreatePodcast />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

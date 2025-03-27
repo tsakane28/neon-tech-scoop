@@ -6,6 +6,9 @@ import NewsCard from '@/components/ui/NewsCard';
 import NewsletterSubscribe from '@/components/ui/NewsletterSubscribe';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { newsArticles } from '@/data/siteData';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const News = () => {
   const [activeTab, setActiveTab] = useState('all');
@@ -34,11 +37,19 @@ const News = () => {
       <main className="flex-grow">
         {/* Header */}
         <section className="py-16 bg-muted/30">
-          <div className="content-container">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Latest News</h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
-              Stay up-to-date with the latest developments in technology, startups, AI, and more.
-            </p>
+          <div className="content-container flex justify-between items-center">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">Latest News</h1>
+              <p className="text-xl text-muted-foreground max-w-3xl">
+                Stay up-to-date with the latest developments in technology, startups, AI, and more.
+              </p>
+            </div>
+            <Link to="/create/news">
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" />
+                Create News
+              </Button>
+            </Link>
           </div>
         </section>
         

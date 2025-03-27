@@ -1,105 +1,78 @@
-
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useEffect, useMemo } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import NewsletterSubscribe from '@/components/ui/NewsletterSubscribe';
-import NewsCard from '@/components/ui/NewsCard';
-import { getArticleBySlug, newsArticles } from '@/data/siteData';
-import { Clock } from 'lucide-react';
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Button } from "@/components/ui/button";
+import { Twitter, Facebook, Linkedin, Link2 } from 'lucide-react';
+import { newsArticles, blogPosts } from '@/data/siteData';
 
 const ArticlePage = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const article = getArticleBySlug(slug || '');
+  const { slug } = useParams();
+  const navigate = useNavigate();
   
-  // Get related articles (excluding the current one)
-  const relatedArticles = article 
-    ? newsArticles
-        .filter(a => a.category === article.category && a.id !== article.id)
-        .slice(0, 3)
-    : [];
-
-  // If article not found, display message
+  // Find the article with the matching slug
+  const article = useMemo(() => {
+    // Search in both news articles and blog posts
+    const allArticles = [...newsArticles, ...blogPosts];
+    return allArticles.find(article => article.slug === slug);
+  }, [slug]);
+  
+  // If article not found, redirect to 404
+  useEffect(() => {
+    if (!article && slug) {
+      navigate('/not-found');
+    }
+  }, [article, navigate, slug]);
+  
   if (!article) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        
-        <main className="flex-grow flex items-center justify-center">
-          <div className="text-center p-8">
-            <h1 className="text-3xl font-bold mb-4">Article Not Found</h1>
-            <p className="text-muted-foreground mb-6">The article you're looking for doesn't exist or has been removed.</p>
-            <Link 
-              to="/"
-              className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium"
-            >
-              Return to Home
-            </Link>
-          </div>
-        </main>
-        
-        <Footer />
-      </div>
-    );
+    return null;
   }
-
+  
+  // Find related articles
+  const relatedArticles = useMemo(() => {
+    const allArticles = [...newsArticles, ...blogPosts];
+    return allArticles
+      .filter(item => item.id !== article.id && item.category === article.category)
+      .slice(0, 3);
+  }, [article]);
+  
+  // Format the date
+  const formattedDate = article.date;
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       
       <main className="flex-grow">
-        {/* Header */}
-        <section 
-          className="pt-16 pb-32 relative bg-gradient-to-b from-background to-muted/30"
-          style={{
-            backgroundImage: article.image ? `url(${article.image})` : undefined,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          {article.image && (
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30"></div>
-          )}
-          
-          <div className="content-container max-w-4xl mx-auto relative z-10">
-            <Link 
-              to={`/category/${article.category.toLowerCase()}`}
-              className="inline-block mb-4 px-3 py-1 text-sm font-medium rounded-full border neon-border bg-background/10 backdrop-blur-sm"
-            >
-              {article.category}
-            </Link>
+        {/* Article Header */}
+        <section className="py-16 bg-muted/30">
+          <div className="content-container">
+            <div className="flex items-center gap-2 mb-4">
+              <Link 
+                to={`/category/${article.category.toLowerCase()}`}
+                className="text-sm font-medium text-primary hover:underline"
+              >
+                {article.category}
+              </Link>
+              <span className="text-muted-foreground">•</span>
+              <span className="text-sm text-muted-foreground">{formattedDate}</span>
+              <span className="text-muted-foreground">•</span>
+              <span className="text-sm text-muted-foreground">{article.readTime}</span>
+            </div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-              {article.title}
-            </h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">{article.title}</h1>
             
-            <p className="text-xl text-muted-foreground mb-8">
-              {article.excerpt}
-            </p>
-            
-            <div className="flex items-center">
-              {article.author && (
-                <div className="flex items-center mr-6">
-                  {article.author.avatar && (
-                    <img 
-                      src={article.author.avatar} 
-                      alt={article.author.name} 
-                      className="w-10 h-10 rounded-full mr-3"
-                    />
-                  )}
-                  <span className="font-medium">{article.author.name}</span>
-                </div>
-              )}
-              
-              <div className="flex items-center text-muted-foreground text-sm">
-                <span>{article.date}</span>
-                {article.readTime && (
-                  <>
-                    <span className="mx-3">•</span>
-                    <Clock className="w-4 h-4 mr-1" />
-                    <span>{article.readTime}</span>
-                  </>
-                )}
+            <div className="flex items-center gap-3">
+              <Avatar>
+                <AvatarImage src={article.author.avatar} />
+                <AvatarFallback>{article.author.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="font-medium">{article.author.name}</p>
+                <p className="text-sm text-muted-foreground">Writer</p>
               </div>
             </div>
           </div>
@@ -107,37 +80,102 @@ const ArticlePage = () => {
         
         {/* Article Content */}
         <section className="py-16">
-          <div className="content-container max-w-4xl mx-auto">
-            <div className="prose prose-lg dark:prose-invert max-w-none">
-              {article.content ? (
-                <div dangerouslySetInnerHTML={{ __html: article.content }} />
-              ) : (
-                <p>This article content is not available.</p>
-              )}
+          <div className="content-container">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              <div className="lg:col-span-8">
+                <div className="mb-8">
+                  <AspectRatio ratio={16 / 9} className="bg-muted rounded-lg overflow-hidden">
+                    <img 
+                      src={article.image} 
+                      alt={article.title}
+                      className="object-cover w-full h-full"
+                    />
+                  </AspectRatio>
+                </div>
+                
+                <div className="prose prose-lg dark:prose-invert max-w-none">
+                  <p className="lead">{article.excerpt}</p>
+                  
+                  {/* If content exists, display it */}
+                  {article.content ? (
+                    <div dangerouslySetInnerHTML={{ __html: article.content }} />
+                  ) : (
+                    // Default content if none provided
+                    <>
+                      <p>The tech industry continues to evolve at a breakneck pace, with new developments emerging daily that challenge our understanding of what's possible. This article explores the implications of these changes and what they mean for businesses, consumers, and society at large.</p>
+                      <h2>Understanding the Impact</h2>
+                      <p>As technology becomes increasingly integrated into every aspect of our lives, it's crucial to consider both the opportunities and challenges it presents. From artificial intelligence to blockchain, these technologies offer tremendous potential for innovation and progress.</p>
+                      <p>However, they also raise important questions about privacy, security, and the changing nature of work. How we navigate these questions will shape the future of the tech industry and its role in society.</p>
+                      <h2>Looking Ahead</h2>
+                      <p>The next decade promises to bring even more radical changes as technologies mature and converge. Companies that stay ahead of these trends will be well-positioned to capitalize on new opportunities, while those that fail to adapt may struggle to remain relevant.</p>
+                      <p>For consumers, these changes will bring both convenience and complexity. Understanding the implications of new technologies will be essential for making informed decisions about which products and services to adopt.</p>
+                      <h2>Conclusion</h2>
+                      <p>The tech landscape will continue to evolve in ways we can't fully predict. By staying informed and engaged, we can help shape a future where technology serves human needs and values.</p>
+                    </>
+                  )}
+                </div>
+              </div>
+              
+              <div className="lg:col-span-4">
+                <div className="sticky top-24">
+                  <h3 className="text-xl font-bold mb-6">Related Articles</h3>
+                  <div className="space-y-6">
+                    {relatedArticles.map(relatedArticle => (
+                      <Link 
+                        key={relatedArticle.id}
+                        to={`/article/${relatedArticle.slug}`}
+                        className="block group"
+                      >
+                        <div className="flex gap-4">
+                          <div className="flex-none w-20 h-20 rounded-md overflow-hidden">
+                            <img 
+                              src={relatedArticle.image}
+                              alt={relatedArticle.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                          <div>
+                            <h4 className="font-medium line-clamp-2 group-hover:text-primary transition-colors">
+                              {relatedArticle.title}
+                            </h4>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              {relatedArticle.readTime}
+                            </p>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                  
+                  <div className="mt-8 pt-8 border-t">
+                    <h3 className="text-xl font-bold mb-6">Share This Article</h3>
+                    <div className="flex gap-4">
+                      <Button variant="outline" size="icon">
+                        <Twitter className="h-4 w-4" />
+                      </Button>
+                      <Button variant="outline" size="icon">
+                        <Facebook className="h-4 w-4" />
+                      </Button>
+                      <Button variant="outline" size="icon">
+                        <Linkedin className="h-4 w-4" />
+                      </Button>
+                      <Button variant="outline" size="icon">
+                        <Link2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
         
-        {/* Related Articles */}
-        {relatedArticles.length > 0 && (
-          <section className="py-16 bg-muted/30">
-            <div className="content-container">
-              <h2 className="text-2xl font-bold mb-8">Related Articles</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {relatedArticles.map(relatedArticle => (
-                  <NewsCard key={relatedArticle.id} article={relatedArticle} />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-        
         {/* Newsletter */}
-        <section className="py-16">
+        <section className="py-16 bg-muted/30">
           <div className="content-container">
             <NewsletterSubscribe 
-              title="Never Miss a Story" 
-              description="Get the latest technology news and in-depth analyses delivered to your inbox."
+              title="Want More Tech Insights?" 
+              description="Subscribe to our newsletter for the latest news, analysis, and deep dives into the tech world."
             />
           </div>
         </section>
