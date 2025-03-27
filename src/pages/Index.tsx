@@ -37,7 +37,7 @@ const featuredPodcasts: PodcastEpisode[] = [
   {
     id: '3',
     title: 'The Future of Work: Remote, Hybrid, or Office?',
-    description: 'Tech companies are setting the trend for how we'll work in the future. We discuss the pros and cons of different models.',
+    description: "Tech companies are setting the trend for how we'll work in the future. We discuss the pros and cons of different models.",
     podcastName: 'Equity',
     image: 'https://images.unsplash.com/photo-1585976219691-0b092629cf02?auto=format&fit=crop&w=800&q=80',
     audio: 'https://example.com/podcast3.mp3',
@@ -76,7 +76,7 @@ const blogPosts: NewsArticle[] = [
   },
   {
     id: 'b2',
-    title: 'Web3 and the Creator Economy: What's Next?',
+    title: "Web3 and the Creator Economy: What's Next?",
     excerpt: 'Is Web3 still the future for content creators? We examine the current state of blockchain-based platforms for artists and writers.',
     category: 'Blog',
     author: {
