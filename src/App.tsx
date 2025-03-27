@@ -7,6 +7,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import News from "./pages/News";
+import Podcasts from "./pages/Podcasts";
+import Blog from "./pages/Blog";
+import ArticlePage from "./pages/ArticlePage";
+import PodcastPage from "./pages/PodcastPage";
+import CategoryPage from "./pages/CategoryPage";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -29,7 +35,13 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            {/* Add other routes here as we build more pages */}
+            <Route path="/news" element={<News />} />
+            <Route path="/podcasts" element={<Podcasts />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/article/:slug" element={<ArticlePage />} />
+            <Route path="/podcast/:slug" element={<PodcastPage />} />
+            <Route path="/category/:category" element={<CategoryPage />} />
+            <Route path="/category/:category/:subcategory" element={<CategoryPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
